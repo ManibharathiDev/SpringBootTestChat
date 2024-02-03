@@ -1,4 +1,6 @@
 let stompClient = null;
+let nickName = null;
+let selectedId = null;
 const socket = new SockJS("/ws");
 stompClient = Stomp.over(socket);
 stompClient.connect(
@@ -13,6 +15,16 @@ function onConnected()
 
     stompClient.subscribe("/user/public",onMessageReceived);
 
+
+
+}
+
+function onOneMessageReceived(payload)
+{
+    console.log("One to one message received");
+    const message = JSON.parse(payload.body);
+    let data = "<li>"+message.senderId+"-"+message.message+"</li>";
+    $(myMessages).append(data);
 }
 
 
@@ -23,7 +35,7 @@ function onMessageReceived(payload)
     const message = JSON.parse(payload.body);
 
     let data = "<li>"+message.name+"-"+message.content+"</li>";
-    $(myMessages).append(data);
+    //$(myMessages).append(data);
 
 }
 
@@ -38,16 +50,41 @@ $(document).ready(function(){
 //        {},
 //        JSON.stringify({nickName: nickname, fullName: fullname, status: 'ONLINE'})
 //    );
-    $('#sendMessage').click(function(){
-        console.log("Send message clicked");
+
+
+    $('#sendChatMessage').click(function(){
+
+        let message = $('#chatMessage').val();
+        alert(selectedId);
+        stompClient.send("/app/chat",
+                        {},
+                        JSON.stringify({senderId: nickName, recipientId: selectedId, message: message})
+                    );
+
+    });
+
+    $('#sendMessage').click(function()
+    {
+
+        nickName = $('#nickName').val();
+        let name = $('#name').val();
+
+        stompClient.subscribe(`/user/${nickName}/queue/messages`,onOneMessageReceived)
+
+        /*console.log("Send message clicked");
         let profileName = $('#profileName').val();
         let name = $('#name').val();
         let message = $('#message').val();
         stompClient.send("/app/user.addMessage",
                 {},
                 JSON.stringify({profileName: profileName, name: name, content: message})
-            );
+            );*/
 
     });
+
+    $('.selectedId').click(function(){
+        selectedId = this.id;
+        alert(selectedId);
+    })
 
 });

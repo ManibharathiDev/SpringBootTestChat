@@ -8,5 +8,5 @@ import lombok.Setter;
 public class User {
     private String profileName;
     private String name;
-    private String content;
+    private int status;
 }

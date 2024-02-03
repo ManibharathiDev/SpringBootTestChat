@@ -23,4 +23,11 @@ public class MessageController {
         //return getClass().getSimpleName()+"- Message Received";
     }
 
+    @MessageMapping("/user.addUser")
+    @SendTo("/user/public")
+    public User addNewUser(@Payload User user)
+    {
+        return user;
+    }
+
 }
