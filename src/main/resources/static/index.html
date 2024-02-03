@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+
+    <h1>Test Chat</h1>
+
+    <table>
+        <tr>
+            <td>Profile Name</td>
+            <td><input type="text" id="profileName"/></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td><input type="text" id="name"/></td>
+        </tr>
+
+        <tr>
+            <td>Message</td>
+            <td><input type="text" id="message"/></td>
+        </tr>
+
+    </table>
+
+    <button id="sendMessage">Send Message</button>
+
+    <div>
+        <h2>Received Messages</h2>
+        <ul id="myMessages">
+
+        </ul>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
