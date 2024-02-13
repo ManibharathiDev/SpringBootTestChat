@@ -6,6 +6,7 @@ import com.test.chat.Test.Chat.service.ChatService;
 import com.test.chat.Test.Chat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,7 +27,23 @@ public class APIController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
+
+    @GetMapping("/login/{email}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public User login(@PathVariable String email)
+    {
+        return userService.findUser(email);
+
+
+       // return ResponseEntity.ok(userService.fin(email));
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public static class ResourceNotFoundException extends RuntimeException {
+    }
+
     @PostMapping("/add_user")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public User addNewUser(@RequestBody User user)
     {
         return userService.saveUser(user);
@@ -45,6 +62,7 @@ public class APIController {
     }
 
     @PostMapping("/chat")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public void sendMessage(@RequestBody Chat chat)
     {
         chat.setCreatedAt(new java.sql.Date(Calendar.getInstance().getTime().getTime()));

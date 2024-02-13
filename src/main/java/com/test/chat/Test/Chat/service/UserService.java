@@ -1,5 +1,6 @@
 package com.test.chat.Test.Chat.service;
 
+import com.test.chat.Test.Chat.exceptions.NoUserFound;
 import com.test.chat.Test.Chat.model.User;
 import com.test.chat.Test.Chat.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +18,12 @@ public class UserService {
     private UserRepository userRepository;
 
 
+    public User findUser(String email)
+    {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        return optionalUser.orElseThrow(NoUserFound::new);
+        //return userRepository.findByEmail(email).or;
+    }
 
     public User saveUser(User user)
     {
@@ -33,7 +41,9 @@ public class UserService {
 
     public User findByEmail(User user)
     {
-        return userRepository.findByEmail(user.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        return optionalUser.orElseThrow(NoUserFound::new);
+       // return userRepository.findByEmail(user.getEmail());
     }
 
     public List<User> fetchAllUsers()
