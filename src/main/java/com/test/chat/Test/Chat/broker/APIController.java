@@ -49,10 +49,11 @@ public class APIController {
         return userService.saveUser(user);
     }
 
-    @GetMapping("/view_users")
-    public ResponseEntity<List<User>> findConnectedUsers()
+    @GetMapping("/view_users/{email}")
+    public ResponseEntity<List<User>> findConnectedUsers(@PathVariable String email)
     {
-        return ResponseEntity.ok(userService.fetchAllUsers());
+        return ResponseEntity.ok(userService.fetchAllUsersExcept(email));
+        //return ResponseEntity.ok(userService.fetchAllUsers());
     }
 
     @GetMapping("/message/{senderid}/{recipientid}")

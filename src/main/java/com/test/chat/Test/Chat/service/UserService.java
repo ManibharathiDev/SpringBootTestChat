@@ -25,6 +25,11 @@ public class UserService {
         //return userRepository.findByEmail(email).or;
     }
 
+    public List<User> fetchAllUsersExcept(String email)
+    {
+        return userRepository.findAllEmailNotIn(email);
+    }
+
     public User saveUser(User user)
     {
         User eUser = findByEmail(user);
@@ -45,6 +50,8 @@ public class UserService {
         return optionalUser.orElseThrow(NoUserFound::new);
        // return userRepository.findByEmail(user.getEmail());
     }
+
+
 
     public List<User> fetchAllUsers()
     {
